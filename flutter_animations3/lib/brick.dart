@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:math' as math;
 
 
 class BrickPage extends StatefulWidget {
@@ -23,7 +24,10 @@ Tween tween;
      );
 
      tween = Tween( begin:0.0 , end: 1.0 );
+     animationController.repeat();
   }
+  
+
 
 
 //Brick 1
@@ -81,6 +85,13 @@ curve: Interval(0.875, 1.0, curve: Curves.linear),
 parent: animationController
   ));
 
+
+@override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    animationController.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -93,10 +104,10 @@ parent: animationController
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Brick(),
-              Brick(),
-              Brick(),
-              Brick()
+              AnimatedBrick(animations: [animOne,animTwo],controller: animationController,marginLeft: 15,alignment: Alignment.centerLeft),
+              AnimatedBrick(animations: [animThree,animEight],controller: animationController,marginLeft: 15,),
+              AnimatedBrick(animations: [animFour,animSeven],controller: animationController,marginLeft: 15,),
+              AnimatedBrick(animations: [animFive,animSix],controller: animationController,marginLeft: 15,),
             ],
           ),
     
@@ -104,6 +115,40 @@ parent: animationController
       ),
     );
   }
+}
+
+
+class AnimatedBrick extends AnimatedWidget{
+final AnimationController controller;
+final List<Animation> animations;
+final double marginLeft;
+final Alignment alignment;
+
+AnimatedBrick(  {
+Key key,
+this.controller,
+this.animations,
+this.marginLeft,
+this.alignment = Alignment.centerRight
+}) : super(key:key,listenable:controller);
+
+Matrix4 cloclWise(animation) => Matrix4.rotationZ(animation.value * math.pi*2.0 * 0.5);
+
+  @override
+  Widget build(BuildContext context) {
+
+    var firstTransformation;
+    firstTransformation = cloclWise(animations[0]);
+    // TODO: implement build
+    return Transform(
+      transform: firstTransformation,
+      alignment: alignment,
+      
+      child: Brick(marginLeft: marginLeft,));
+  }
+
+
+
 }
 
 
