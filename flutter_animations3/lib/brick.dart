@@ -20,7 +20,7 @@ Tween tween;
     super.initState();
     animationController = AnimationController(
       vsync: this,
-      duration: Duration(seconds:5 ),
+      duration: Duration(seconds:3 ),
      );
 
      tween = Tween( begin:0.0 , end: 1.0 );
@@ -104,10 +104,11 @@ parent: animationController
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              AnimatedBrick(animations: [animOne,animTwo],controller: animationController,marginLeft: 15,alignment: Alignment.centerLeft),
-              AnimatedBrick(animations: [animThree,animEight],controller: animationController,marginLeft: 15,),
-              AnimatedBrick(animations: [animFour,animSeven],controller: animationController,marginLeft: 15,),
-              AnimatedBrick(animations: [animFive,animSix],controller: animationController,marginLeft: 15,),
+              AnimatedBrick(animations: [animOne,animTwo],controller: animationController,marginLeft: 0,alignment: Alignment.centerLeft,isClockwise: true,),
+              AnimatedBrick(animations: [animThree,animEight],controller: animationController,marginLeft: 0,isClockwise: false,),
+              AnimatedBrick(animations: [animFour,animSeven],controller: animationController,marginLeft: 30,isClockwise: true,),
+              AnimatedBrick(animations: [animFive,animSix],controller: animationController,marginLeft: 30,isClockwise: false,),
+         
             ],
           ),
     
@@ -123,28 +124,46 @@ final AnimationController controller;
 final List<Animation> animations;
 final double marginLeft;
 final Alignment alignment;
+final bool isClockwise;
 
 AnimatedBrick(  {
 Key key,
 this.controller,
 this.animations,
 this.marginLeft,
-this.alignment = Alignment.centerRight
+this.alignment = Alignment.centerRight,
+this.isClockwise
 }) : super(key:key,listenable:controller);
 
 Matrix4 cloclWise(animation) => Matrix4.rotationZ(animation.value * math.pi*2.0 * 0.5);
 
+Matrix4 antiClockwise(animation) => Matrix4.rotationZ(-(animation.value * math.pi*2.0 * 0.5));
+
+
   @override
   Widget build(BuildContext context) {
 
-    var firstTransformation;
-    firstTransformation = cloclWise(animations[0]);
+    var firstTransformation,secondTransformation;
+    
+    if(isClockwise){
+        firstTransformation = cloclWise(animations[0]);
+    secondTransformation = cloclWise(animations[1]);
+    }
+    else{
+        firstTransformation = antiClockwise(animations[0]);
+    secondTransformation = antiClockwise(animations[1]);
+    }
+  
+
     // TODO: implement build
     return Transform(
       transform: firstTransformation,
       alignment: alignment,
       
-      child: Brick(marginLeft: marginLeft,));
+      child: Transform(
+        transform: secondTransformation,
+        alignment: alignment,
+        child: Brick(marginLeft: marginLeft,)));
   }
 
 
@@ -163,7 +182,12 @@ class Brick extends StatelessWidget {
             width: 40.0, 
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15.0),
-                      color: Colors.yellow, 
+                      gradient:LinearGradient(
+                        colors: [
+                          Colors.red,
+                          Colors.yellow
+                        ]
+                      ) , 
 
   
 ),  );
