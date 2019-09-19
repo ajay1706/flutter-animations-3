@@ -16,7 +16,30 @@ class _BrickPageState extends State<BrickPage> {
       body:  Container(
         color: Colors.black,
         child: Center(
-          child: Container(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Brick(),
+              Brick(),
+              Brick(),
+              Brick()
+            ],
+          ),
+    
+        ),
+      ),
+    );
+  }
+}
+
+
+class Brick extends StatelessWidget {
+  final double marginLeft;
+  Brick({this.marginLeft =18.0});
+  @override
+  Widget build(BuildContext context) {
+    return   Container(
+      margin: EdgeInsets.only(left: marginLeft),
             height:10.0,
             width: 40.0, 
             decoration: BoxDecoration(
@@ -24,9 +47,6 @@ class _BrickPageState extends State<BrickPage> {
                       color: Colors.yellow, 
 
   
-),  ),
-        ),
-      ),
-    );
+),  );
   }
 }
