@@ -6,7 +6,81 @@ class BrickPage extends StatefulWidget {
   _BrickPageState createState() => _BrickPageState();
 }
 
-class _BrickPageState extends State<BrickPage> {
+class _BrickPageState extends State<BrickPage> with TickerProviderStateMixin{
+
+
+AnimationController animationController;
+Tween tween;
+
+
+@override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    animationController = AnimationController(
+      vsync: this,
+      duration: Duration(seconds:5 ),
+     );
+
+     tween = Tween( begin:0.0 , end: 1.0 );
+  }
+
+
+//Brick 1
+  Animation get animOne => tween.animate(CurvedAnimation(  
+curve: Interval(0.0, 0.125, curve: Curves.linear),
+parent: animationController
+  ));
+
+
+  //Brick 2
+    Animation get animTwo => tween.animate(CurvedAnimation(  
+curve: Interval(0.125, 0.250, curve: Curves.linear),
+parent: animationController
+  ));
+
+
+  //Brick 3
+  Animation get animThree => tween.animate(CurvedAnimation(  
+curve: Interval(0.25, 0.375, curve: Curves.linear),
+parent: animationController
+  ));
+
+
+//Brick 4
+  Animation get animFour => tween.animate(CurvedAnimation(  
+curve: Interval(0.375, 0.5, curve: Curves.linear),
+parent: animationController
+  ));
+
+
+  //Brick 5
+  Animation get animFive => tween.animate(CurvedAnimation(  
+curve: Interval(0.5, 0.625, curve: Curves.linear),
+parent: animationController
+  ));
+
+
+  //Brick 6
+    Animation get animSix => tween.animate(CurvedAnimation(  
+curve: Interval(0.625, 0.750, curve: Curves.linear),
+parent: animationController
+  ));
+
+
+  //Brick 7
+  Animation get animSeven => tween.animate(CurvedAnimation(  
+curve: Interval(0.75, 0.875, curve: Curves.linear),
+parent: animationController
+  ));
+
+
+//Brick 8
+  Animation get animEight => tween.animate(CurvedAnimation(  
+curve: Interval(0.875, 1.0, curve: Curves.linear),
+parent: animationController
+  ));
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
